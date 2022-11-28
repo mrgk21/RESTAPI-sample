@@ -4,14 +4,58 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Albums</title>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<title>Comments</title>
 	</head>
 	<body>
-		<h1>Welcome to the Comments Page</h1>
+		<script type="text/javascript">
+			async function postReq(e) {
+				const { target } = e;
+				const res = await axios.post("http://localhost:3000/comments", {
+					postId: target["postId"].value,
+					name: target["name"].value,
+					email: target["email"].value,
+					body: target["body"].value,
+				});
+			}
+			async function putReq(e) {
+				const { target } = e;
+				const res = await axios.put(
+					`http://localhost:3000/comments/${target["postId"].value}/${target["id"].value}`,
+					{
+						name: target["name"].value,
+						email: target["email"].value,
+						body: target["body"].value,
+					}
+				);
+			}
+		</script>
+		<h1>Welcome to the Comment Page</h1>
 
 		<label>Select your action:</label>
 		<ul>
-			<li>View all entries: <a href="/comments">Click here</a></li>
+			<li>GET data: <a href="/comments">Click here</a></li>
+			<li>
+				<form onsubmit="event.preventDefault(); postReq(event);">
+					<label>POST data: </label>
+					<input placeholder="Enter post id" name="postId" />
+					<input placeholder="Enter name" name="name" />
+					<input placeholder="Enter email" name="email" />
+					<input placeholder="Enter body" name="body" />
+					<button>Click me</button>
+				</form>
+			</li>
+			<li>
+				<form onsubmit="event.preventDefault(); putReq(event);">
+					<label>PUT/update data: </label>
+					<input placeholder="Enter post id" name="postId" />
+					<input placeholder="Enter id" name="id" />
+					<input placeholder="Enter name" name="name" />
+					<input placeholder="Enter email" name="email" />
+					<input placeholder="Enter body" name="body" />
+					<button>Click me</button>
+				</form>
+			</li>
 		</ul>
 	</body>
 </html>
