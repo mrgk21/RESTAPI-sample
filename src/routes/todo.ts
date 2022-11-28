@@ -47,4 +47,4 @@ todoRouter.get("/:userId/:id", (req, res) => {
 	return res.status(400).sendFile(utils.buildPath("pages/error.html"));
 });
 
-export { todoRouter };
+export default todoRouter;

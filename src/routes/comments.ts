@@ -48,4 +48,4 @@ commentsRouter.get("/:postId/:id", (req, res) => {
 	return res.status(400).sendFile(utils.buildPath("pages/error.html"));
 });
 
-export { commentsRouter };
+export default commentsRouter;

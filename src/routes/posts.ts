@@ -47,4 +47,4 @@ postsRouter.get("/:userId/:id", (req, res) => {
 	return res.status(400).sendFile(utils.buildPath("pages/error.html"));
 });
 
-export { postsRouter };
+export default postsRouter;
