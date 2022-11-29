@@ -29,6 +29,7 @@ commentsRouter.get("/", (req, res) => {
 	return res.status(400).sendFile(utils.buildPath("pages/error.html"));
 });
 
+// @ts-ignore
 commentsRouter.post("/", (req, res) => {
 	try {
 		const { postId, name, email, body } = req.body;

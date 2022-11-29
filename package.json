@@ -18,8 +18,10 @@
 	"dependencies": {
 		"@types/cors": "^2.8.12",
 		"@types/lodash": "^4.14.190",
+		"@types/morgan": "^1.9.3",
 		"cors": "^2.8.5",
 		"express": "^4.18.2",
-		"lodash": "^4.17.21"
+		"lodash": "^4.17.21",
+		"morgan": "^1.10.0"
 	}
 }

@@ -29,6 +29,7 @@ albumsRouter.get("/", (req, res) => {
 	return res.status(400).sendFile(utils.buildPath("pages/error.html"));
 });
 
+// @ts-ignore
 albumsRouter.post("/", (req, res) => {
 	try {
 		const { userId, title } = req.body;

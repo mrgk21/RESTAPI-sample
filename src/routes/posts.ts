@@ -28,6 +28,7 @@ postsRouter.get("/", (req, res) => {
 	return res.status(400).sendFile(utils.buildPath("pages/error.html"));
 });
 
+// @ts-ignore
 postsRouter.post("/", (req, res) => {
 	try {
 		const { userId, title, body } = req.body;
