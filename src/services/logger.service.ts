@@ -1,4 +1,4 @@
-import morgan, { Morgan } from "morgan";
+import morgan from "morgan";
 import { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
