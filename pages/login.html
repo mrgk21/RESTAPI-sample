@@ -12,10 +12,12 @@
 			async function login(e) {
 				const { target } = e;
 				console.log(target);
-				const res = await axios.post("http://localhost:3000/auth/login", {
+				const { data } = await axios.post("http://localhost:3000/auth/login", {
 					user: target["user"].value,
 					pass: target["pass"].value,
 				});
+				localStorage.setItem("accessToken", data.accessToken);
+				localStorage.setItem("refreshToken", data.refreshToken);
 			}
 		</script>
 		<h1>Login</h1>
