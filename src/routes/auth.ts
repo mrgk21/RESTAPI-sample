@@ -22,6 +22,12 @@ const testAcc: object = {
 	pass: "123",
 };
 
+type jwtObject = {
+	user: string;
+	iat?: number;
+	exp?: number;
+};
+
 // future updates
 type OAuthLoginSite = "github" | "google";
 
@@ -37,9 +43,13 @@ authRouter.get("/info", (req: Request<{}, {}, {}, { token: string }>, res) => {
 authRouter.get("/refresh", (req: Request<{}, {}, {}, { token: string }>, res) => {
 	const { token } = req.query;
 	if (!refreshTokens.includes(token)) return res.sendStatus(403);
-	jwt.verify(token, String(process.env.JWT_REFRESH_TOKEN_SECRET), (err, user) => {
+	jwt.verify(token, String(process.env.JWT_REFRESH_TOKEN_SECRET), (err, payload) => {
 		if (err) return res.status(403).send(err.message);
-		const accessToken = jwt.sign({ user }, String(process.env.JWT_ACCESS_TOKEN_SECRET));
+
+		const { user } = payload as jwtObject;
+		const accessToken = jwt.sign({ user }, String(process.env.JWT_ACCESS_TOKEN_SECRET), {
+			expiresIn: "15s",
+		});
 		return res.status(200).send({ message: "you got in!", token: accessToken });
 	});
 });
@@ -58,6 +68,7 @@ authRouter.post("/login", (req: Request<{}, {}, { user: string; pass: string }, 
 		expiresIn: "15s",
 	});
 	const refreshToken = jwt.sign({ user }, String(process.env.JWT_REFRESH_TOKEN_SECRET));
+
 	refreshTokens.push(refreshToken);
 	return res.send({ accessToken, refreshToken });
 });
