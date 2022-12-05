@@ -9,6 +9,23 @@
 	</head>
 	<body>
 		<script type="text/javascript">
+			async function getReq(e) {
+				const { target } = e;
+				try {
+					const res = await axios.get("http://localhost:3000/posts", {
+						headers: {
+							authorization: `bearer ${localStorage.getItem("accessToken")}`,
+						},
+					});
+				} catch (error) {
+					console.log(error);
+					if (error.code === 403) {
+						const { data } = await axios.get("http://localhost:3000/auth/refresh");
+						localStorage.setItem("accessToken", data.token);
+					}
+				}
+			}
+
 			async function postReq(e) {
 				const { target } = e;
 				const res = await axios.post("http://localhost:3000/posts", {

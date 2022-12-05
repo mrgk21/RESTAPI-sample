@@ -43,10 +43,14 @@ commentsRouter.post("/", (req, res) => {
 
 		if (typeof maxId !== "undefined") {
 			comments.push({ postId: Number(postId), id: maxId.id + 1, name, email, body });
-			writeFile(utils.buildPath("src/fakeData/comments.json"), JSON.stringify(comments), (err) => {
-				if (err) return res.status(500).send(err);
-				return res.status(200).send("Request successful");
-			});
+			writeFile(
+				utils.buildPath("src/fakeData/comments.json"),
+				JSON.stringify(comments),
+				(err) => {
+					if (err) return res.status(500).send(err);
+					return res.status(200).send("Request successful");
+				}
+			);
 		} else return res.sendStatus(500);
 	} catch (error: any) {
 		return res.status(400).send(error.message);
@@ -59,7 +63,8 @@ commentsRouter.get("/:postId", (req, res) => {
 	if (utils.checkforNumeric(postId)) {
 		let sorted = comments.filter((entry) => entry.postId == Number(postId));
 		sorted = lodash.sortBy(sorted, ["postId"]);
-		if (sorted.length === 0) return res.status(400).sendFile(utils.buildPath("pages/error.html"));
+		if (sorted.length === 0)
+			return res.status(400).sendFile(utils.buildPath("pages/error.html"));
 		return res.status(200).json(sorted);
 	}
 	return res.status(400).sendFile(utils.buildPath("pages/error.html"));
@@ -70,9 +75,12 @@ commentsRouter.get("/:postId/:id", (req, res) => {
 
 	if (utils.checkforNumeric(postId)) {
 		if (utils.checkforNumeric(id)) {
-			let sorted = comments.filter((entry) => entry.postId == Number(postId) && entry.id === Number(id));
+			let sorted = comments.filter(
+				(entry) => entry.postId == Number(postId) && entry.id === Number(id)
+			);
 			sorted = lodash.sortBy(sorted, ["postId", "id"]);
-			if (sorted.length === 0) return res.status(400).sendFile(utils.buildPath("pages/error.html"));
+			if (sorted.length === 0)
+				return res.status(400).sendFile(utils.buildPath("pages/error.html"));
 			return res.status(200).json(sorted);
 		}
 	}
@@ -86,7 +94,9 @@ commentsRouter.put("/:postId/:id", (req, res) => {
 		if (!utils.checkforNumeric(id)) throw new Error("id needs to be a number");
 		if (!utils.checkforNumeric(postId)) throw new Error("postId needs to be a number");
 
-		const sorted = comments.filter((entry) => entry.id === Number(id) && entry.postId === Number(postId));
+		const sorted = comments.filter(
+			(entry) => entry.id === Number(id) && entry.postId === Number(postId)
+		);
 		if (sorted.length === 0) throw new Error("Item does not exist");
 
 		const new_comments = comments.map((entry) => {
@@ -104,13 +114,47 @@ commentsRouter.put("/:postId/:id", (req, res) => {
 			return entry;
 		});
 
-		writeFile(utils.buildPath("src/fakeData/comments.json"), JSON.stringify(new_comments), (err) => {
-			if (err) return res.status(500);
-			return res.status(200).send("Request successful");
-		});
+		writeFile(
+			utils.buildPath("src/fakeData/comments.json"),
+			JSON.stringify(new_comments),
+			(err) => {
+				if (err) return res.status(500);
+				return res.status(200).send("Request successful");
+			}
+		);
 		return res.status(500);
 	} catch (error: any) {
 		return res.status(400).send(error.message);
+	}
+});
+
+commentsRouter.delete("/:postId/:id", (req, res) => {
+	try {
+		const { postId, id } = req.params;
+		if (!utils.checkforNumeric(id)) throw new Error("id needs to be a number");
+		if (!utils.checkforNumeric(postId)) throw new Error("userId needs to be a number");
+
+		const sorted = comments.filter(
+			(entry) => entry.id === Number(id) && entry.postId === Number(postId)
+		);
+		if (sorted.length === 0) return res.sendStatus(404);
+
+		// @ts-ignore
+		const new_comments = comments.filter((entry) => {
+			if (entry.id !== Number(id)) return entry;
+		});
+
+		writeFile(
+			utils.buildPath("src/fakeData/comments.json"),
+			JSON.stringify(new_comments),
+			(err) => {
+				if (err) return res.status(500);
+				return res.status(200).send("Request successful");
+			}
+		);
+		return res.status(500);
+	} catch (err: any) {
+		return res.status(400).send(err.message);
 	}
 });
 

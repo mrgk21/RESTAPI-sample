@@ -24,7 +24,8 @@ postsRouter.get("/", (req, res) => {
 		return res.json(sorted_album);
 	}
 
-	if (typeof entryPage == "string") if (entryPage == "true") return res.sendFile(utils.buildPath("pages/posts.html"));
+	if (typeof entryPage == "string")
+		if (entryPage == "true") return res.sendFile(utils.buildPath("pages/posts.html"));
 	return res.status(400).sendFile(utils.buildPath("pages/error.html"));
 });
 
@@ -58,7 +59,8 @@ postsRouter.get("/:userId", (req, res) => {
 	if (utils.checkforNumeric(userId)) {
 		let sorted = posts.filter((entry) => entry.userId == Number(userId));
 		sorted = lodash.sortBy(sorted, ["userId"]);
-		if (sorted.length === 0) return res.status(400).sendFile(utils.buildPath("pages/error.html"));
+		if (sorted.length === 0)
+			return res.status(400).sendFile(utils.buildPath("pages/error.html"));
 		return res.status(200).json(sorted);
 	}
 	return res.status(400).sendFile(utils.buildPath("pages/error.html"));
@@ -69,9 +71,12 @@ postsRouter.get("/:userId/:id", (req, res) => {
 
 	if (utils.checkforNumeric(userId)) {
 		if (utils.checkforNumeric(id)) {
-			let sorted = posts.filter((entry) => entry.userId == Number(userId) && entry.id === Number(id));
+			let sorted = posts.filter(
+				(entry) => entry.userId == Number(userId) && entry.id === Number(id)
+			);
 			sorted = lodash.sortBy(sorted, ["userId", "id"]);
-			if (sorted.length === 0) return res.status(400).sendFile(utils.buildPath("pages/error.html"));
+			if (sorted.length === 0)
+				return res.status(400).sendFile(utils.buildPath("pages/error.html"));
 			return res.status(200).json(sorted);
 		}
 	}
@@ -85,7 +90,9 @@ postsRouter.put("/:userId/:id", (req, res) => {
 		if (!utils.checkforNumeric(id)) throw new Error("id needs to be a number");
 		if (!utils.checkforNumeric(userId)) throw new Error("userId needs to be a number");
 
-		const sorted = posts.filter((entry) => entry.id === Number(id) && entry.userId === Number(userId));
+		const sorted = posts.filter(
+			(entry) => entry.id === Number(id) && entry.userId === Number(userId)
+		);
 		if (sorted.length === 0) throw new Error("Item does not exist");
 
 		const new_posts = posts.map((entry) => {
@@ -109,6 +116,32 @@ postsRouter.put("/:userId/:id", (req, res) => {
 		return res.status(500);
 	} catch (error: any) {
 		return res.status(400).send(error.message);
+	}
+});
+
+postsRouter.delete("/:userId/:id", (req, res) => {
+	try {
+		const { userId, id } = req.params;
+		if (!utils.checkforNumeric(id)) throw new Error("id needs to be a number");
+		if (!utils.checkforNumeric(userId)) throw new Error("userId needs to be a number");
+
+		const sorted = posts.filter(
+			(entry) => entry.id === Number(id) && entry.userId === Number(userId)
+		);
+		if (sorted.length === 0) return res.sendStatus(404);
+
+		// @ts-ignore
+		const new_posts = posts.filter((entry) => {
+			if (entry.id !== Number(id)) return entry;
+		});
+
+		writeFile(utils.buildPath("src/fakeData/posts.json"), JSON.stringify(new_posts), (err) => {
+			if (err) return res.status(500);
+			return res.status(200).send("Request successful");
+		});
+		return res.status(500);
+	} catch (err: any) {
+		return res.status(400).send(err.message);
 	}
 });
 

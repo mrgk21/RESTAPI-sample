@@ -43,10 +43,14 @@ albumsRouter.post("/", (req, res) => {
 
 		if (typeof maxId !== "undefined") {
 			albums.push({ userId: Number(userId), id: maxId.id + 1, title });
-			writeFile(utils.buildPath("src/fakeData/albums.json"), JSON.stringify(albums), (err) => {
-				if (err) return res.status(500).send(err);
-				return res.status(200).send("Request successful");
-			});
+			writeFile(
+				utils.buildPath("src/fakeData/albums.json"),
+				JSON.stringify(albums),
+				(err) => {
+					if (err) return res.status(500).send(err);
+					return res.status(200).send("Request successful");
+				}
+			);
 		} else return res.sendStatus(500);
 	} catch (error: any) {
 		return res.status(400).send(error.message);
@@ -59,7 +63,8 @@ albumsRouter.get("/:userId", (req, res) => {
 	if (utils.checkforNumeric(userId)) {
 		let sorted = albums.filter((entry) => entry.userId == Number(userId));
 		sorted = lodash.sortBy(sorted, ["userId"]);
-		if (sorted.length === 0) return res.status(400).sendFile(utils.buildPath("pages/error.html"));
+		if (sorted.length === 0)
+			return res.status(400).sendFile(utils.buildPath("pages/error.html"));
 		return res.status(200).json(sorted);
 	}
 	return res.status(400).sendFile(utils.buildPath("pages/error.html"));
@@ -70,9 +75,12 @@ albumsRouter.get("/:userId/:id", (req, res) => {
 
 	if (utils.checkforNumeric(userId)) {
 		if (utils.checkforNumeric(id)) {
-			let sorted = albums.filter((entry) => entry.userId == Number(userId) && entry.id === Number(id));
+			let sorted = albums.filter(
+				(entry) => entry.userId == Number(userId) && entry.id === Number(id)
+			);
 			sorted = lodash.sortBy(sorted, ["userId", "id"]);
-			if (sorted.length === 0) return res.status(400).sendFile(utils.buildPath("pages/error.html"));
+			if (sorted.length === 0)
+				return res.status(400).sendFile(utils.buildPath("pages/error.html"));
 			return res.status(200).json(sorted);
 		}
 	}
@@ -86,7 +94,9 @@ albumsRouter.put("/:userId/:id", (req, res) => {
 		if (!utils.checkforNumeric(id)) throw new Error("id needs to be a number");
 		if (!utils.checkforNumeric(userId)) throw new Error("userId needs to be a number");
 
-		const sorted = albums.filter((entry) => entry.id === Number(id) && entry.userId === Number(userId));
+		const sorted = albums.filter(
+			(entry) => entry.id === Number(id) && entry.userId === Number(userId)
+		);
 		if (sorted.length === 0) throw new Error("Item does not exist");
 
 		const new_albums = albums.map((entry) => {
@@ -102,13 +112,47 @@ albumsRouter.put("/:userId/:id", (req, res) => {
 			return entry;
 		});
 
-		writeFile(utils.buildPath("src/fakeData/albums.json"), JSON.stringify(new_albums), (err) => {
-			if (err) return res.status(500);
-			return res.status(200).send("Request successful");
-		});
+		writeFile(
+			utils.buildPath("src/fakeData/albums.json"),
+			JSON.stringify(new_albums),
+			(err) => {
+				if (err) return res.status(500);
+				return res.status(200).send("Request successful");
+			}
+		);
 		return res.status(500);
 	} catch (error: any) {
 		return res.status(400).send(error.message);
+	}
+});
+
+albumsRouter.delete("/:userId/:id", (req, res) => {
+	try {
+		const { userId, id } = req.params;
+		if (!utils.checkforNumeric(id)) throw new Error("id needs to be a number");
+		if (!utils.checkforNumeric(userId)) throw new Error("userId needs to be a number");
+
+		const sorted = albums.filter(
+			(entry) => entry.id === Number(id) && entry.userId === Number(userId)
+		);
+		if (sorted.length === 0) return res.sendStatus(404);
+
+		// @ts-ignore
+		const new_albums = albums.filter((entry) => {
+			if (entry.id !== Number(id)) return entry;
+		});
+
+		writeFile(
+			utils.buildPath("src/fakeData/albums.json"),
+			JSON.stringify(new_albums),
+			(err) => {
+				if (err) return res.status(500);
+				return res.status(200).send("Request successful");
+			}
+		);
+		return res.status(500);
+	} catch (err: any) {
+		return res.status(400).send(err.message);
 	}
 });
 

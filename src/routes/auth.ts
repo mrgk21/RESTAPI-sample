@@ -48,7 +48,7 @@ authRouter.get("/refresh", (req: Request<{}, {}, {}, { token: string }>, res) =>
 
 		const { user } = payload as jwtObject;
 		const accessToken = jwt.sign({ user }, String(process.env.JWT_ACCESS_TOKEN_SECRET), {
-			expiresIn: "15s",
+			expiresIn: "10m",
 		});
 		return res.status(200).send({ message: "you got in!", token: accessToken });
 	});
@@ -65,7 +65,7 @@ authRouter.post("/login", (req: Request<{}, {}, { user: string; pass: string }, 
 	const { user, pass } = req.body;
 	if (!_.isEqual({ user, pass }, testAcc)) return res.status(403).send("wrong username/password");
 	const accessToken = jwt.sign({ user }, String(process.env.JWT_ACCESS_TOKEN_SECRET), {
-		expiresIn: "15s",
+		expiresIn: "10m",
 	});
 	const refreshToken = jwt.sign({ user }, String(process.env.JWT_REFRESH_TOKEN_SECRET));
 
