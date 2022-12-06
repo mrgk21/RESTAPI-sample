@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"preserve": "rimraf dist && tsc",
-		"serve": "tsc -w & nodemon dist/server.js"
+		"serve": "tsc -w & nodemon dist/server.js",
+		"build": "tsc --build --clean"
 	},
 	"author": "Gaurav K",
 	"license": "ISC",
