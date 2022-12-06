@@ -2,10 +2,10 @@ import mongoose, { Connection } from "mongoose";
 import { Request, Response, NextFunction } from "express";
 
 //@schema
-import { postSchema } from "./schema/posts";
-import { albumSchema } from "./schema/albums";
-import { commentSchema } from "./schema/comments";
-import { todoSchema } from "./schema/todos";
+import { postSchema } from "./db.schema/posts";
+import { albumSchema } from "./db.schema/albums";
+import { commentSchema } from "./db.schema/comments";
+import { todoSchema } from "./db.schema/todos";
 
 const conn: Connection = mongoose
 	.createConnection(process.env.MONGODB_ATLAS_URI!, { keepAlive: true })

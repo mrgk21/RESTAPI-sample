@@ -1,17 +1,15 @@
-import mongoose from "mongoose";
+import { Schema } from "mongoose";
 
-const Schema = mongoose.Schema;
-
-interface albumInterface {
+interface todoInterface {
 	userId: number;
 	id: number;
 	title: string;
 }
 
-const albumSchema = new Schema<albumInterface>({
+const todoSchema = new Schema<todoInterface>({
 	userId: { type: Number, required: true },
 	id: { type: Number, required: true, unique: true },
 	title: { type: String, required: true },
 });
 
-export { albumSchema, albumInterface };
+export { todoSchema, todoInterface };
