@@ -1,1 +1,1 @@
-# Generic REST server
+# Basic RESTAPI server
