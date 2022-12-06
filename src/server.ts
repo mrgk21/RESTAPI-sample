@@ -6,14 +6,11 @@ import express from "express";
 import cors from "cors";
 import rootRouter from "./routes/root";
 import logger from "./services/logger.service";
+import mongodbConnect from "./services/db.service";
 import helmet from "helmet";
 
 const app = express();
 const port: number = Number(process.env.DEV_PORT) || 3000;
-
-const client_id = process.env.GITHUB_CLIENT_ID;
-const client_secret = process.env.GITHUB_CLIENT_SECRET;
-console.log(client_id, client_secret);
 
 app.use(cors());
 app.use(
@@ -27,6 +24,7 @@ app.use(
 		},
 	})
 );
+app.use(mongodbConnect);
 app.use(express.json());
 app.use(logger("dev", "dev.log"));
 
