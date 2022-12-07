@@ -6,7 +6,8 @@
 	"scripts": {
 		"preserve": "rimraf dist && tsc",
 		"serve": "tsc -w & nodemon dist/server.js",
-		"build": "tsc --build --clean"
+		"build": "tsc",
+		"start": "node dist/server.js"
 	},
 	"author": "Gaurav K",
 	"license": "ISC",
@@ -18,7 +19,8 @@
 		"@types/morgan": "^1.9.3",
 		"@types/node": "^18.11.9",
 		"nodemon": "^2.0.20",
-		"rimraf": "^3.0.2"
+		"rimraf": "^3.0.2",
+		"typescript": "^4.9.3"
 	},
 	"dependencies": {
 		"axios": "^1.2.0",
