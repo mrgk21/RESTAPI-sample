@@ -3,32 +3,20 @@ import * as dotenv from "dotenv";
 dotenv.config({ path: path.join(__dirname, "../.env") });
 
 import express from "express";
-// import cors from "cors";
+import cookieParser from "cookie-parser";
 import rootRouter from "./routes/root";
 import logger from "./services/logger.service";
 import cors from "./services/cors.service";
 import mongodbConnect from "./services/db.service";
-import helmet from "helmet";
 
 const app = express();
 const port: number = Number(process.env.DEV_PORT) || 3000;
 
-// app.use(cors());
-// app.use(
-// 	helmet({
-// 		contentSecurityPolicy: {
-// 			useDefaults: false,
-// 			directives: {
-// 				defaultSrc: ["'self'", "localhost"],
-// 				scriptSrc: ["cdn.jsdelivr.net", "'self'", "'unsafe-inline'"],
-// 			},
-// 		},
-// 	})
-// );
 app.use("/", cors);
 app.use(mongodbConnect);
+app.use(cookieParser());
 app.use(express.json());
-// app.use(logger("dev", "dev.log"));
+app.use(logger("dev", "dev.log"));
 
 app.use("/", rootRouter);
 

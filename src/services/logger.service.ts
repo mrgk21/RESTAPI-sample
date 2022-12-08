@@ -7,7 +7,9 @@ type loggerType = "dev" | "complete" | "mini";
 
 morgan.token("body", (req: Request, res: Response) => JSON.stringify(req.body));
 let logger = (type: loggerType, logfile: `${loggerType}.log`) => {
-	const logStream = fs.createWriteStream(path.join(__dirname, `../../logs/${logfile}`), { flags: "a" });
+	const logStream = fs.createWriteStream(path.join(__dirname, `../../logs/${logfile}`), {
+		flags: "a",
+	});
 	switch (type) {
 		case "dev":
 			return morgan(":method :url :status :response-time ms :res[content-length] :body", {
