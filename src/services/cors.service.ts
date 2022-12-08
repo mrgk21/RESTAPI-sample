@@ -4,17 +4,11 @@ import helmet from "helmet";
 
 const securityRouter = express.Router();
 
-securityRouter.use(cors());
 securityRouter.use(
-	helmet({
-		contentSecurityPolicy: {
-			useDefaults: false,
-			directives: {
-				defaultSrc: ["'self'", "localhost"],
-				scriptSrc: ["cdn.jsdelivr.net", "'self'", "'unsafe-inline'"],
-			},
-		},
+	cors({
+		credentials: true,
 	})
 );
+securityRouter.use(helmet());
 
 export default securityRouter;

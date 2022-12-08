@@ -1,8 +1,8 @@
 import { Connection, Model } from "mongoose";
-import { albumInterface } from "../../services/db.schema/albums";
-import { postInterface } from "../../services/db.schema/posts";
-import { commentInterface } from "../../services/db.schema/albums";
-import { todoInterface } from "../../services/db.schema/albums";
+import { albumInterface } from "../../services/db.schema/albums.schema";
+import { postInterface } from "../../services/db.schema/posts.schema";
+import { commentInterface } from "../../services/db.schema/comments.schema";
+import { todoInterface } from "../../services/db.schema/todos.schema";
 
 export {};
 
