@@ -58,16 +58,26 @@ const getAccessToken = async (code: string): Promise<string | any> => {
 	return access_token;
 };
 
-authRouter.post("/login", (req: Request<{}, {}, { user: string; pass: string }, {}>, res) => {
-	const { user, pass } = req.body;
-	if (!_.isEqual({ user, pass }, testAcc)) return res.status(403).send("wrong username/password");
-	const accessToken = jwt.sign({ user }, String(process.env.ACCESS_TOKEN_SECRET), {
-		expiresIn: "10m",
-	});
-	const refreshToken = jwt.sign({ user }, String(process.env.REFRESH_TOKEN_SECRET));
+authRouter.post("/login", async (req: Request<{}, {}, { user: string; pass: string }, {}>, res) => {
+	try {
+		const { user, pass } = req.body;
 
-	refreshTokens.push(refreshToken);
-	return res.send({ accessToken, refreshToken });
+		if (!utils.checkForValidString(user)) throw new Error("user cannot be empty");
+		if (!utils.checkForValidString(pass)) throw new Error("pass cannot be empty");
+
+		const credResult = await req.CredModel.findOne({ user, pass }).exec();
+
+		if (!credResult) return res.status(403).send("wrong username/password");
+		const accessToken = jwt.sign({ user }, String(process.env.ACCESS_TOKEN_SECRET), {
+			expiresIn: "10m",
+		});
+		const refreshToken = jwt.sign({ user }, String(process.env.REFRESH_TOKEN_SECRET));
+
+		refreshTokens.push(refreshToken);
+		return res.send({ accessToken, refreshToken });
+	} catch (error: any) {
+		return res.status(400).send(error.message);
+	}
 });
 
 authRouter.get(

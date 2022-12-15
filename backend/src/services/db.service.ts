@@ -6,6 +6,7 @@ import { postSchema } from "./db.schema/posts.schema";
 import { albumSchema } from "./db.schema/albums.schema";
 import { commentSchema } from "./db.schema/comments.schema";
 import { todoSchema } from "./db.schema/todos.schema";
+import { credSchema } from "./db.schema/credentials.schema";
 
 const conn: Connection = mongoose
 	.createConnection(process.env.MONGODB_ATLAS_URI!, { keepAlive: true })
@@ -20,5 +21,6 @@ export default function mongodbConnect(req: Request, res: Response, next: NextFu
 	req.CommentModel = conn.model("comment", commentSchema);
 	req.AlbumModel = conn.model("album", albumSchema);
 	req.TodoModel = conn.model("todo", todoSchema);
+	req.CredModel = conn.model("credential", credSchema);
 	next();
 }
