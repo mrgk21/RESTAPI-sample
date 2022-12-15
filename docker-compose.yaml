@@ -2,14 +2,12 @@ version: "3"
 
 services:
     front:
-        build: ./frontend
-        image: restapi-frontend
+        image: mrgk21/rest-api:frontend-v1.0.0
         container_name: webpage
         ports:
-            - 4000:5000
+            - 5000:5000
     server:
-        build: ./backend
-        image: restapi-backend
+        image: mrgk21/rest-api:backend-v1.0.0
         container_name: server
         ports:
-            - 4001:3000
+            - 5001:5001
