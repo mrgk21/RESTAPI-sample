@@ -17,7 +17,7 @@ const Login = ({}) => {
 
 	// handleLoginRerouting
 	useEffect(() => {
-		if (sessionStorage.getItem("accessToken")) navigate("/", { state: { loginStatus: true } });
+		if (sessionStorage.getItem("accessToken")) navigate("/");
 	});
 
 	const handleLogin = async (e) => {
@@ -30,7 +30,7 @@ const Login = ({}) => {
 			});
 			sessionStorage.setItem("accessToken", data.accessToken);
 			sessionStorage.setItem("refreshToken", data.refreshToken);
-			navigate("/", { state: { loginStatus: true } });
+			navigate("/");
 		} catch (error) {
 			console.log(error.message);
 		}
@@ -40,9 +40,6 @@ const Login = ({}) => {
 		console.log(cookies.token);
 		sessionStorage.setItem("accessToken", cookies.token);
 		removeCookie("token", { path: "/" });
-		// console.log("before navigate");
-		// navigate("/", { state: { loginStatus: true } });
-		// console.log("after navigate");
 	}
 
 	return (

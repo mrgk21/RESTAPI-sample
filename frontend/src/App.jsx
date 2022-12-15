@@ -4,12 +4,12 @@ import { Outlet, Link, useLocation } from "react-router-dom";
 
 function App() {
 	const [loginStatus, setLoginStatus] = useState(false);
-	const location = useLocation();
+	// const location = useLocation();
 
 	useEffect(() => {
-		console.log(location);
-		if (location.state) setLoginStatus(location.state.loginStatus);
-	}, [location]);
+		if (sessionStorage.getItem("accessToken")) setLoginStatus(true);
+		else setLoginStatus(false);
+	}, []);
 
 	const handleLogout = async () => {
 		const { data } = await axios.get(
