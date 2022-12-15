@@ -34,7 +34,7 @@ const Register = ({}) => {
 					<Label htmlFor="userField" text="Enter userId:" />
 					<Input id="userField" name="user" placeholder="Enter userId..." />
 					<Label htmlFor="passField" text="Enter password:" />
-					<Input type="pass" id="passField" name="pass" placeholder="Enter pass..." />
+					<Input type="password" id="passField" name="pass" placeholder="Enter pass..." />
 					<SubmitButton text="Register" />
 				</form>
 				<Link to="../login" relative="path" className="me-auto">
