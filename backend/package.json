@@ -7,6 +7,7 @@
 		"preserve": "rimraf dist && tsc",
 		"serve": "tsc -w & nodemon dist/server.js",
 		"build": "tsc",
+		"prestart": "rimraf dist && tsc",
 		"start": "node dist/server.js"
 	},
 	"author": "Gaurav K",

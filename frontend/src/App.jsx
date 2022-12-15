@@ -13,7 +13,9 @@ function App() {
 
 	const handleLogout = async () => {
 		const { data } = await axios.get(
-			`http://localhost:3000/auth/logout?token=${sessionStorage.getItem("accessToken")}`
+			`${import.meta.env.VITE_BACKEND_URI}/auth/logout?token=${sessionStorage.getItem(
+				"accessToken"
+			)}`
 		);
 		sessionStorage.removeItem("accessToken");
 		sessionStorage.removeItem("refreshToken");

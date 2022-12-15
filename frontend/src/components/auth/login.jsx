@@ -24,7 +24,7 @@ const Login = ({}) => {
 		e.preventDefault();
 		const { target } = e;
 		try {
-			const { data } = await axios.post("http://localhost:3000/auth/login", {
+			const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URI}/auth/login`, {
 				user: target["user"].value,
 				pass: target["pass"].value,
 			});
@@ -57,7 +57,7 @@ const Login = ({}) => {
 					className="me-auto"
 					href={`https://github.com/login/oauth/authorize?client_id=${
 						import.meta.env.VITE_OAUTH_GITHUB_CLIENT_ID
-					}&redirect_uri=http://localhost:3000/auth/github/callback?path=${
+					}&redirect_uri=${import.meta.env.VITE_BACKEND_URI}/auth/github/callback?path=${
 						window.location.href
 					}`}
 				>

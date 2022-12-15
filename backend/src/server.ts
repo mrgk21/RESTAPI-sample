@@ -10,13 +10,13 @@ import cors from "./services/cors.service";
 import mongodbConnect from "./services/db.service";
 
 const app = express();
-const port: number = Number(process.env.DEV_PORT) || 3000;
+const port: number = Number(process.env.PORT) || 3000;
 
 app.use("/", cors);
 app.use(mongodbConnect);
 app.use(cookieParser());
 app.use(express.json());
-app.use(logger("dev", "dev.log"));
+if (process.env.NODE_ENV === "development") app.use(logger("dev", "dev.log"));
 
 app.use("/", rootRouter);
 

@@ -28,15 +28,22 @@ const Comments = () => {
 				case "GET": {
 					let response = {};
 					if (typeof target["postId"] === "undefined")
-						response = await axios.get("http://localhost:3000/comments", authHeader());
+						response = await axios.get(
+							`${import.meta.env.VITE_BACKEND_URI}/comments`,
+							authHeader()
+						);
 					else if (typeof target["id"] === "undefined")
 						response = await axios.get(
-							`http://localhost:3000/comments/${target["postId"].value}`,
+							`${import.meta.env.VITE_BACKEND_URI}/comments/${
+								target["postId"].value
+							}`,
 							authHeader()
 						);
 					else
 						response = await axios.get(
-							`http://localhost:3000/comments/${target["postId"].value}/${target["id"].value}`,
+							`${import.meta.env.VITE_BACKEND_URI}/comments/${
+								target["postId"].value
+							}/${target["id"].value}`,
 							authHeader()
 						);
 
@@ -46,7 +53,7 @@ const Comments = () => {
 				}
 				case "POST": {
 					const response = await axios.post(
-						"http://localhost:3000/comments",
+						`${import.meta.env.VITE_BACKEND_URI}/comments`,
 						{
 							postId: target["postId"].value,
 							name: target["name"].value,
@@ -60,7 +67,9 @@ const Comments = () => {
 				}
 				case "PUT": {
 					const response = await axios.put(
-						`http://localhost:3000/comments/${target["postId"].value}/${target["id"].value}`,
+						`${import.meta.env.VITE_BACKEND_URI}/comments/${target["postId"].value}/${
+							target["id"].value
+						}`,
 						{
 							name: target["name"].value,
 							email: target["email"].value,
@@ -73,7 +82,9 @@ const Comments = () => {
 				}
 				case "DELETE": {
 					const response = await axios.delete(
-						`http://localhost:3000/comments/${target["postId"].value}/${target["id"].value}`,
+						`${import.meta.env.VITE_BACKEND_URI}/comments/${target["postId"].value}/${
+							target["id"].value
+						}`,
 						authHeader()
 					);
 					console.log(response);
@@ -84,9 +95,9 @@ const Comments = () => {
 			if (error.response.status === 403) {
 				try {
 					const { data } = await axios.get(
-						`http://localhost:3000/auth/refresh?token=${sessionStorage.getItem(
-							"refreshToken"
-						)}`
+						`${
+							import.meta.env.VITE_BACKEND_URI
+						}/auth/refresh?token=${sessionStorage.getItem("refreshToken")}`
 					);
 					console.log("new token: ", data.token);
 					sessionStorage.setItem("accessToken", data.token);

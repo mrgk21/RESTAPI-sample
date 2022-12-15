@@ -27,15 +27,20 @@ const Todo = () => {
 				case "GET": {
 					let response = {};
 					if (typeof target["userId"] === "undefined")
-						response = await axios.get("http://localhost:3000/todo", authHeader());
+						response = await axios.get(
+							`${import.meta.env.VITE_BACKEND_URI}/todo`,
+							authHeader()
+						);
 					else if (typeof target["id"] === "undefined")
 						response = await axios.get(
-							`http://localhost:3000/todo/${target["userId"].value}`,
+							`${import.meta.env.VITE_BACKEND_URI}/todo/${target["userId"].value}`,
 							authHeader()
 						);
 					else
 						response = await axios.get(
-							`http://localhost:3000/todo/${target["userId"].value}/${target["id"].value}`,
+							`${import.meta.env.VITE_BACKEND_URI}/todo/${target["userId"].value}/${
+								target["id"].value
+							}`,
 							authHeader()
 						);
 
@@ -45,7 +50,7 @@ const Todo = () => {
 				}
 				case "POST": {
 					const response = await axios.post(
-						"http://localhost:3000/todo",
+						`${import.meta.env.VITE_BACKEND_URI}/todo`,
 						{
 							userId: target["userId"].value,
 							title: target["title"].value,
@@ -57,7 +62,9 @@ const Todo = () => {
 				}
 				case "PUT": {
 					const response = await axios.put(
-						`http://localhost:3000/todo/${target["userId"].value}/${target["id"].value}`,
+						`${import.meta.env.VITE_BACKEND_URI}/todo/${target["userId"].value}/${
+							target["id"].value
+						}`,
 						{
 							title: target["title"].value,
 						},
@@ -68,7 +75,9 @@ const Todo = () => {
 				}
 				case "DELETE": {
 					const response = await axios.delete(
-						`http://localhost:3000/todo/${target["userId"].value}/${target["id"].value}`,
+						`${import.meta.env.VITE_BACKEND_URI}/todo/${target["userId"].value}/${
+							target["id"].value
+						}`,
 						authHeader()
 					);
 					console.log(response);
@@ -80,9 +89,9 @@ const Todo = () => {
 			if (error.response.status === 403) {
 				try {
 					const { data } = await axios.get(
-						`http://localhost:3000/auth/refresh?token=${sessionStorage.getItem(
-							"refreshToken"
-						)}`
+						`${
+							import.meta.env.VITE_BACKEND_URI
+						}/auth/refresh?token=${sessionStorage.getItem("refreshToken")}`
 					);
 					console.log("new token: ", data.token);
 					sessionStorage.setItem("accessToken", data.token);

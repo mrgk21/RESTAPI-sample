@@ -14,7 +14,7 @@ const Register = ({}) => {
 		e.preventDefault();
 		const { target } = e;
 		try {
-			const { data } = await axios.post("http://localhost:3000/auth/register", {
+			const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URI}/auth/register`, {
 				user: target["user"].value,
 				pass: target["pass"].value,
 			});
