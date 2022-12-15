@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 //@assets
@@ -32,7 +32,7 @@ const Login = ({}) => {
 			sessionStorage.setItem("refreshToken", data.refreshToken);
 			navigate("/");
 		} catch (error) {
-			console.log(error.message);
+			console.log(error.response.data);
 		}
 	};
 
@@ -68,6 +68,9 @@ const Login = ({}) => {
 						</span>
 					</button>
 				</a>
+				<Link to="../register" relative="path" className="me-auto">
+					<small>Dont have an account? Click here to register</small>
+				</Link>
 			</div>
 		</React.Fragment>
 	);

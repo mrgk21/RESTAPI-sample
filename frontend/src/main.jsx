@@ -12,6 +12,7 @@ import Todo from "./components/routes/todo";
 import Albums from "./components/routes/albums";
 
 import Login from "./components/auth/login";
+import Register from "./components/auth/register";
 
 const router = createBrowserRouter([
 	{
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
 	{
 		path: "/auth/login",
 		element: <Login />,
+	},
+	{
+		path: "/auth/register",
+		element: <Register />,
 	},
 	{
 		path: "/api/posts",

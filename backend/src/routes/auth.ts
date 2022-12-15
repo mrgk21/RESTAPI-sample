@@ -14,6 +14,9 @@ const utils = {
 		if (typeof value == "number") return true;
 		return new RegExp(/^[0-9]+$/gm).test(value);
 	},
+	checkForValidString: (value: any): boolean => {
+		return typeof value === "string" && value.length !== 0;
+	},
 };
 
 let refreshTokens: string[] = [];
@@ -79,6 +82,34 @@ authRouter.post("/login", async (req: Request<{}, {}, { user: string; pass: stri
 		return res.status(400).send(error.message);
 	}
 });
+
+authRouter.post(
+	"/register",
+	async (req: Request<{}, {}, { user: string; pass: string }, {}>, res) => {
+		try {
+			const { user, pass } = req.body;
+
+			if (!utils.checkForValidString(user)) throw new Error("user cannot be empty");
+			if (!utils.checkForValidString(pass)) throw new Error("pass cannot be empty");
+
+			const credResult = await req.CredModel.findOne({ user });
+			console.log(credResult);
+
+			if (credResult) return res.status(403).send("Account already exists");
+			await req.CredModel.create({ user, pass });
+
+			const accessToken = jwt.sign({ user }, String(process.env.ACCESS_TOKEN_SECRET), {
+				expiresIn: "10m",
+			});
+			const refreshToken = jwt.sign({ user }, String(process.env.REFRESH_TOKEN_SECRET));
+
+			refreshTokens.push(refreshToken);
+			return res.send({ accessToken, refreshToken });
+		} catch (error: any) {
+			return res.status(400).send(error.message);
+		}
+	}
+);
 
 authRouter.get(
 	"/github/callback",
