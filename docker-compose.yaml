@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+    front:
+        build: ./frontend
+        image: restapi-frontend
+        container_name: webpage
+        ports:
+            - 4000:5000

@@ -1,8 +1,9 @@
 FROM node:19-alpine3.15
 
-WORKDIR /app
+WORKDIR /frontend
 COPY package.json .
 COPY yarn.lock .
+COPY vite.config.js .
 RUN yarn install
 COPY . .
-RUN yarn build
+CMD ["yarn", "preview"]
