@@ -1,5 +1,5 @@
 import React from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createHashRouter } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 import ReactDOM from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.css";
@@ -14,7 +14,7 @@ import Albums from "./components/routes/albums";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
 	{
 		path: "/",
 		element: <App />,

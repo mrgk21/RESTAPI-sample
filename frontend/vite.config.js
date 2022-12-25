@@ -13,5 +13,6 @@ export default defineConfig(({ command, mode }) => {
 			port: env.PORT,
 		},
 		plugins: [react()],
+		base: `/RESTAPI-sample/`,
 	};
 });
