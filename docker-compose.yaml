@@ -5,10 +5,12 @@ services:
         build:
             context: ./reverse_proxy
         container_name: reverse_proxy
+        depends_on:
+            - backend
         ports:
-            - 80:80
+            - 443:443
     backend:
-        image: mrgk21/rest-api:backend-v1.0.0
+        image: mrgk21/rest-api:backend-v1.1.0
         container_name: backend
         ports:
             - 5001:5001
