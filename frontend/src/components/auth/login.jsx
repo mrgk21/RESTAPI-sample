@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
 
 //@assets
 import githubIcon from "../../assets/github.svg";
@@ -13,34 +13,55 @@ import SubmitButton from "../common/form_elements/submitButton";
 
 const Login = ({}) => {
 	const navigate = useNavigate();
-	const [cookies, setCookie, removeCookie] = useCookies();
+
+	const authHeader = () => {
+		return {
+			headers: {
+				"Access-Control-Allow-Origin": `${import.meta.env.VITE_BACKEND_URI}`,
+				"Access-Control-Allow-Methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+			},
+		};
+	};
+
+	useEffect(() => {
+		if (sessionStorage.getItem("accessToken")) navigate("/", { replace: true });
+	});
 
 	// handleLoginRerouting
 	useEffect(() => {
-		if (sessionStorage.getItem("accessToken")) navigate("/");
+		const getToken = async () => {
+			try {
+				const { data: token } = await axios.get(
+					`${import.meta.env.VITE_BACKEND_URI}/auth/github/token`
+				);
+				sessionStorage.setItem("accessToken", token);
+				navigate("/", { replace: true });
+			} catch (error) {
+				if (error.code == 404) return;
+			}
+		};
+		getToken();
 	});
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
 		const { target } = e;
 		try {
-			const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URI}/auth/login`, {
-				user: target["user"].value,
-				pass: target["pass"].value,
-			});
+			const { data } = await axios.post(
+				`${import.meta.env.VITE_BACKEND_URI}/auth/login`,
+				{
+					user: target["user"].value,
+					pass: target["pass"].value,
+				},
+				authHeader()
+			);
 			sessionStorage.setItem("accessToken", data.accessToken);
 			sessionStorage.setItem("refreshToken", data.refreshToken);
-			navigate("/");
+			navigate("/", { replace: true });
 		} catch (error) {
 			console.log(error.response.data);
 		}
 	};
-
-	if (typeof cookies.token !== "undefined") {
-		console.log(cookies.token);
-		sessionStorage.setItem("accessToken", cookies.token);
-		removeCookie("token", { path: "/" });
-	}
 
 	return (
 		<React.Fragment>

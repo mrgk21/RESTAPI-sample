@@ -10,14 +10,27 @@ import SubmitButton from "../common/form_elements/submitButton";
 const Register = ({}) => {
 	const navigate = useNavigate();
 
+	const authHeader = () => {
+		return {
+			headers: {
+				"Access-Control-Allow-Origin": `${import.meta.env.VITE_BACKEND_IP}`,
+				"Access-Control-Allow-Methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+			},
+		};
+	};
+
 	const handleRegister = async (e) => {
 		e.preventDefault();
 		const { target } = e;
 		try {
-			const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URI}/auth/register`, {
-				user: target["user"].value,
-				pass: target["pass"].value,
-			});
+			const { data } = await axios.post(
+				`${import.meta.env.VITE_BACKEND_URI}/auth/register`,
+				{
+					user: target["user"].value,
+					pass: target["pass"].value,
+				},
+				authHeader()
+			);
 			sessionStorage.setItem("accessToken", data.accessToken);
 			sessionStorage.setItem("refreshToken", data.refreshToken);
 			navigate("/");
