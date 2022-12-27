@@ -19,11 +19,8 @@ const utils = {
 	},
 };
 
+let gitTokens: string[] = [];
 let refreshTokens: string[] = [];
-const testAcc: object = {
-	user: "test",
-	pass: "123",
-};
 
 type jwtObject = {
 	user: string;
@@ -111,6 +108,12 @@ authRouter.post(
 	}
 );
 
+authRouter.get("/github/token", (req, res) => {
+	//this wont work in high traffic scenarios. Shift to token-store instead
+	if (gitTokens.length == 0) return res.sendStatus(404);
+	return res.send(gitTokens.pop());
+});
+
 authRouter.get(
 	"/github/callback",
 	async (req: Request<{}, {}, {}, { code: string; path: string }, {}>, res) => {
@@ -121,12 +124,13 @@ authRouter.get(
 			const githubData = await getUser(accessToken);
 
 			const token = jwt.sign({ ...githubData }, process.env.ACCESS_TOKEN_SECRET!);
-
-			res.cookie("token", token, {
-				httpOnly: false,
-				sameSite: "none",
-				secure: true,
-			});
+			gitTokens.push(token);
+			// res.cookie("token", token, {
+			// 	httpOnly: false,
+			// 	sameSite: "lax",
+			// 	secure: true,
+			// });
+			// res.setHeader("token", token);
 			return res.redirect(path);
 		} catch (error: any) {
 			return res.status(400).send(error.message);
@@ -137,7 +141,6 @@ authRouter.get(
 // @ts-ignore
 authRouter.get("/refresh", (req: Request<{}, {}, {}, { token: string }>, res) => {
 	const { token } = req.query;
-	if (!refreshTokens.includes(token)) return res.sendStatus(403);
 	jwt.verify(token, String(process.env.REFRESH_TOKEN_SECRET), (err, payload) => {
 		if (err) return res.status(403).send(err.message);
 

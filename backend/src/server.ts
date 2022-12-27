@@ -13,6 +13,7 @@ const app = express();
 const port: number = Number(process.env.PORT) || 3000;
 
 app.use("/", cors);
+if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
 app.use(mongodbConnect);
 app.use(cookieParser());
 app.use(express.json());
