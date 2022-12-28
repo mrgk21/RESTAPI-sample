@@ -1,4 +1,4 @@
-FROM node:19-alpine3.15
+FROM --platform=linux/arm64/v8 node:19-alpine3.15
 
 WORKDIR /backend
 COPY package-lock.json .

@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM --platform=linux/arm64/v8 nginx:latest
 
 WORKDIR /nginx
 COPY ./nginx.conf /etc/nginx/nginx.conf
