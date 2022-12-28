@@ -47,9 +47,7 @@ const router = createHashRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-	<React.StrictMode>
-		<CookiesProvider>
-			<RouterProvider router={router} />
-		</CookiesProvider>
-	</React.StrictMode>
+	<CookiesProvider>
+		<RouterProvider router={router} />
+	</CookiesProvider>
 );

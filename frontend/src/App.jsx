@@ -9,6 +9,23 @@ function App() {
 	useEffect(() => {
 		if (sessionStorage.getItem("accessToken")) setLoginStatus(true);
 		else setLoginStatus(false);
+	});
+
+	const getToken = async () => {
+		try {
+			const { data: token } = await axios.get(
+				`${import.meta.env.VITE_BACKEND_URI}/auth/github/token`
+			);
+			sessionStorage.setItem("accessToken", token);
+			setLoginStatus(true);
+		} catch (error) {
+			if (error.code == 404) return;
+		}
+	};
+
+	// handleLoginRerouting
+	useEffect(() => {
+		getToken();
 	}, []);
 
 	const handleLogout = async () => {

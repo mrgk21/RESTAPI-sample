@@ -23,25 +23,22 @@ const Login = ({}) => {
 		};
 	};
 
-	useEffect(() => {
-		if (sessionStorage.getItem("accessToken")) navigate("/", { replace: true });
-	});
+	const getToken = async () => {
+		try {
+			const { data: token } = await axios.get(
+				`${import.meta.env.VITE_BACKEND_URI}/auth/github/token`
+			);
+			sessionStorage.setItem("accessToken", token);
+			navigate("/", { replace: true });
+		} catch (error) {
+			if (error.code == 404) return;
+		}
+	};
 
 	// handleLoginRerouting
 	useEffect(() => {
-		const getToken = async () => {
-			try {
-				const { data: token } = await axios.get(
-					`${import.meta.env.VITE_BACKEND_URI}/auth/github/token`
-				);
-				sessionStorage.setItem("accessToken", token);
-				navigate("/", { replace: true });
-			} catch (error) {
-				if (error.code == 404) return;
-			}
-		};
 		getToken();
-	});
+	}, []);
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -63,6 +60,13 @@ const Login = ({}) => {
 		}
 	};
 
+	console.log(
+		`https://github.com/login/oauth/authorize?client_id=${
+			import.meta.env.VITE_OAUTH_GITHUB_CLIENT_ID
+		}&redirect_uri=${import.meta.env.VITE_BACKEND_URI}/auth/github/callback?path=${
+			window.location
+		}`
+	);
 	return (
 		<React.Fragment>
 			<div className="d-flex flex-column container-sm">
@@ -79,7 +83,7 @@ const Login = ({}) => {
 					href={`https://github.com/login/oauth/authorize?client_id=${
 						import.meta.env.VITE_OAUTH_GITHUB_CLIENT_ID
 					}&redirect_uri=${import.meta.env.VITE_BACKEND_URI}/auth/github/callback?path=${
-						window.location.href
+						window.location
 					}`}
 				>
 					<button className="btn btn-primary mb-2">
