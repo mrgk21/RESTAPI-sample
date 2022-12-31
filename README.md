@@ -1,5 +1,7 @@
 ## Overview and how to use?
 
+Go [here](https://mrgk21.github.io/RESTAPI-sample/) to access the project.
+
 This project showcases a login procedure using either username-password or your GitHub account. Upon login, you can perform REST operations on four different datasets. These are:
 
 1. Getting all data
@@ -7,6 +9,8 @@ This project showcases a login procedure using either username-password or your 
 3. Posting data into the dataset
 4. Updating an existing data document
 5. Deleting a data document
+
+*Note:* An alternative way is to build the project on your local machine using docker images. You can download the images directly from [here](https://hub.docker.com/r/mrgk21/rest-api) or just download the `docker-compose.yaml` and run `docker compose up`
 
 ## System Architecture
 
