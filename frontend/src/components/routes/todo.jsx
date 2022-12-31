@@ -108,6 +108,9 @@ const Todo = () => {
 		return (
 			<React.Fragment>
 				<ul>
+					<button className="btn btn-primary" onClick={() => setData([])}>
+						Go Back
+					</button>
 					{data.map((item, index) => (
 						<ul>
 							{`[${index}]`}
@@ -131,6 +134,12 @@ const Todo = () => {
 					>
 						GET all todo
 					</button>
+					<Tile
+						method="GET"
+						itemText="GET todo"
+						fields={["userId", "id"]}
+						callback={handleRequests}
+					/>
 					<Tile
 						method="POST"
 						itemText="POST a post"

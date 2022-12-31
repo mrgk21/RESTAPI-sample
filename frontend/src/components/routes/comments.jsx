@@ -114,6 +114,9 @@ const Comments = () => {
 		return (
 			<React.Fragment>
 				<ul>
+					<button className="btn btn-primary" onClick={() => setData([])}>
+						Go Back
+					</button>
 					{data.map((item, index) => (
 						<ul>
 							{`[${index}]`}
@@ -137,6 +140,12 @@ const Comments = () => {
 					>
 						GET all comments
 					</button>
+					<Tile
+						method="GET"
+						itemText="GET comments"
+						fields={["postId", "id"]}
+						callback={handleRequests}
+					/>
 					<Tile
 						method="POST"
 						itemText="POST a post"

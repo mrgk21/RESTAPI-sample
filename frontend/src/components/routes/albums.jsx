@@ -108,6 +108,9 @@ const Albums = () => {
 		return (
 			<React.Fragment>
 				<ul>
+					<button className="btn btn-primary" onClick={() => setData([])}>
+						Go Back
+					</button>
 					{data.map((item, index) => (
 						<ul>
 							{`[${index}]`}
@@ -132,8 +135,14 @@ const Albums = () => {
 						GET all albums
 					</button>
 					<Tile
+						method="GET"
+						itemText="GET albums"
+						fields={["userId", "id"]}
+						callback={handleRequests}
+					/>
+					<Tile
 						method="POST"
-						itemText="POST aan album"
+						itemText="POST an album"
 						fields={["userId", "title"]}
 						callback={handleRequests}
 					/>

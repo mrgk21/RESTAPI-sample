@@ -111,6 +111,9 @@ const Posts = () => {
 		return (
 			<React.Fragment>
 				<ul>
+					<button className="btn btn-primary" onClick={() => setData([])}>
+						Go Back
+					</button>
 					{data.map((item, index) => (
 						<ul>
 							{`[${index}]`}
