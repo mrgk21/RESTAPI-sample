@@ -10,7 +10,8 @@ This project showcases a login procedure using either username-password or your 
 
 ## System Architecture
 
-![System Architecture](https://github.com/mrgk21/RESTAPI-sample/docs_assets/system-architecture.png)
+![System Architecture](https://github.com/mrgk21/RESTAPI-sample/blob/main/docs_assets/system-architecture.png)
+*System Architecture*
 
 ### Frontend
 
