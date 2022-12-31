@@ -53,7 +53,14 @@ const Register = ({}) => {
 				<Link to="../login" relative="path" className="me-auto">
 					<small>Already have an account? Click here to login!</small>
 				</Link>
-				<small className="me-auto">Fun fact: You can also login via github!</small>
+				<p className="mt-2">
+					<mark>!!Disclaimer!!</mark> If you are using the site for the first time, all
+					the requests to the server will be blocked due to its SSL certificate being
+					self-signed. To remedy this, please login via github first, where you will be
+					redirected to a "Website is not secure" page. After clicking "I Accept the
+					Risk", you will be logged into github and the site will function as intended.
+					Please refer the README on my github to know more.
+				</p>
 			</div>
 		</React.Fragment>
 	);
