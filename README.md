@@ -1,6 +1,6 @@
 ## Overview and how to use?
 
-Go [here](https://mrgk21.github.io/RESTAPI-sample/) to access the project.
+~~Go [here](https://mrgk21.github.io/RESTAPI-sample/) to access the project.~~ The project was hosted on my personal Raspberry pi and I don't have a static IP from my ISP. A possible solution would be to make an email feedback loop from the raspi to automatically reconfigure the IP. Meanwhile, project backend and things are available on dockerhub [here](https://hub.docker.com/r/mrgk21/rest-api). Please keep in mind that these maybe buggy as they haven't been updated since the last 10 or so commits.
 
 This project showcases a login procedure using either username-password or your GitHub account. Upon login, you can perform REST operations on four different datasets. These are:
 
